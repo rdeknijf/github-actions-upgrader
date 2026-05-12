@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Github Actions Upgrader</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GAUP - GitHub Actions Upgrader</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <h1>GAUP</h1>
+    <p>Paste a GitHub Actions workflow, get every action upgraded to its latest release.</p>
+  </header>
 
-<h1>Github Actions Upgrader</h1>
-
-<p>Enter your Github Actions script on the left, press submit and your browser will request the
-    newest version (from the Github API) of each used action and replace it in the output.</p>
-
-<textarea id="ga_script_in" name="ga_script_in" rows="40" cols="100">
-// Example script - press Submit
-
-name: Build
+  <main>
+    <div class="editor">
+      <div class="panel">
+        <label for="input">Input</label>
+        <textarea id="input" spellcheck="false">name: Build
 
 on: push
 
@@ -29,14 +29,33 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-</textarea>
+      - name: Login to GCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+      - name: Build and push
+        uses: docker/build-push-action@v2
+      - name: Cache restore
+        uses: actions/cache/restore@v3</textarea>
+      </div>
+      <div class="panel">
+        <label for="output">Output</label>
+        <textarea id="output" spellcheck="false" readonly></textarea>
+      </div>
+    </div>
 
-<button id="submit">Submit</button>
+    <div class="actions">
+      <button id="upgrade" type="button">Upgrade</button>
+      <button id="copy" type="button" disabled>Copy</button>
+    </div>
 
-<textarea id="ga_script_out" name="ga_script_out" rows="40" cols="100">
-Output will be here.
-</textarea>
+    <div id="status" class="status" hidden></div>
+  </main>
 
+  <footer>
+    <a href="https://github.com/rdeknijf/gaup">Source</a>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
-

@@ -1,3 +1,6 @@
-/build
-example.yaml
-!.github
+node_modules/
+.idea/
+.claude/
+.playwright-mcp/
+.wrangler/
+*.iml
